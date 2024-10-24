@@ -23,7 +23,7 @@ workflows:
           environment:
             MONGODB_URI: mongodb+srv://kvance:password1234@cluster0.ugwti.mongodb.net/wordGuessingGame?retryWrites=true&w=majority&appName=Cluster0
           start-command: npm run start:dev
-            cypress-command: npx wait-on@latest tcp:3001 && npx cypress run --parallel --browser electron --headless --baseUrl http://localhost:3001
+            cypress-command: npx wait-on@latest http://localhost:3001 && npx cypress run --parallel --browser electron --headless 
       - cypress/run:
           name: run-component-tests
           cypress-command: npx cypress run --component
