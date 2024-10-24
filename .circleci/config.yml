@@ -21,7 +21,7 @@ workflows:
       - cypress/run:
           name: run-e2e-tests
           start-command: npm run start:dev
-          cypress-command: npx cypress run --parallel --browser electron --headless
+          cypress-command: npx wait-on@latest http://localhost:3001 && npx cypress run --parallel --browser electron --headless
       - cypress/run:
           name: run-component-tests
           cypress-command: npx cypress run --component
