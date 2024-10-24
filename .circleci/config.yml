@@ -1,47 +1,19 @@
 version: 2.1
 
-orbs:
-  cypress: cypress-io/cypress@3.3.1
-
+# 🔑 We first define our jobs. Our configuration just has the `hello-world-job`:
+# In CircleCI, jobs are a collection of steps that are executed together. The job is executed within a container or a virtual machine. 
 jobs:
-  deploy-to-render-staging:
+  # Our hello-world-job just has one step where it runs the command echo "Hello, World" in our CircleCI base container.
+  hello-world-job:
+  # In this example, we are using a docker container to run our job steps. Docker is a platform that allows you to create, manage, and run containers. A container is a unit of software that packages up code and all dependencies so that that code can be run quickly and reliably despite the computing environment. Docker creates a container using an image.
     docker:
       - image: cimg/base:current
     steps:
-      - run:
-          name: Deploy to Render Staging
-          command: |
-            echo "Deploying to Render Staging"
-            curl $RENDER_STAGING_DEPLOYHOOK
-  deploy-to-render-production:
-    docker:
-      - image: cimg/base:current
-    steps:
-      - run:
-          name: Deploy to Render Production
-          command: |
-            echo "Deploying to Render production"
-            curl $RENDER_PRODUCTION_DEPLOYHOOK
+      - run: echo "Hello, World!"
 
+# 🔑 We then define our workflows. Without a workflow, our job definitions would not run by themselves.
 workflows:
-  run-tests-and-deploy-to-staging-hold-then-production:
+  hello-world-workflow:
     jobs:
-      - cypress/run:
-          name: run-component-tests
-          cypress-command: npx cypress run --component
-      - deploy-to-render-staging:
-          requires:
-            - run-component-tests
-          filters:
-            branches:
-              only: main
-      - hold:
-          type: approval
-          requires:
-            - deploy-to-render-staging
-      - deploy-to-render-production:
-          requires:
-            - hold
-          filters:
-            branches:
-              only: main
+    # Note that the - symbol denotes a possible list of items for a certain value. We have a - before our job name, because jobs can contain a list of jobs to run.
+      - hello-world-job
